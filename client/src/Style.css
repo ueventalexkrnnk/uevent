@@ -10,7 +10,7 @@
     position: absolute;
 
     margin-left: 65%;
-    margin-top: 3em;
+    margin-top: 4.5em;
     background-color: rgb(139, 173, 208);
     width: 300px;
     height: 300px;
@@ -41,7 +41,7 @@
 .LoginWindowEmail {
     margin-top: 5%;
     width: 30%;
-    height: 400px;
+    height: 450px;
     margin-left: 34%;
     background-color: rgb(139, 173, 208);
     border-radius: 1em;
@@ -85,6 +85,7 @@
 }
 .RegistrateInput,
 .RegistrateInput1,
+.RegistrateInput2,
 .RegistrateInputFull {
     padding-left: 0.5em;
     width: 91%;
@@ -100,7 +101,11 @@
     border-bottom: 0.1em solid rgb(255, 255, 255);
     outline: none;
 }
-
+.RegistrateInput2
+{
+    margin-top: 0;
+    margin-left: 0%;
+}
 .RegistrateInputFull {
     width: 76%;
     margin-top: 1em;
@@ -512,6 +517,7 @@
 
   
 .site-footer {
+
     background-color: rgb(85, 93, 176);
     padding: 45px 0 20px;
     font-size: 15px;

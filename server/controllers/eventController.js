@@ -20,14 +20,14 @@ class EventController{
 
         const verifyToken = TokenService.validateAccessToken(token)
 
-        const {title, description, type, startDate, endDate} = req.body
+        const {title, description, type, startDate, endDate, price, adress} = req.body
 
         if(verifyToken.status != 'organiser')
             return res.status(400).json({status: "error", error: "The only organiser can create a event!"})
 
         const organiser = await Organiser.getOrganiserByUser(verifyToken.user_id)
 
-        await Event.createEvent(organiser[0].organiser_id, title, description, type, startDate, endDate)
+        await Event.createEvent(organiser[0].organiser_id, title, description, type, startDate, endDate, price, adress)
 
         return res.status(200).json({ status: "success", success: "Event created!"})
     }
@@ -39,14 +39,14 @@ class EventController{
 
         const verifyToken = TokenService.validateAccessToken(token)
 
-        const { event_id } = req.params
 
-        const {title, description, type, startDate, endDate} = req.body
+        const {title, description, type, startDate, endDate, price, address, id} = req.body
+
 
         if(verifyToken.status != 'organiser')
             return res.status(400).json({status: "error", error: "The only organiser can update a event!"})
 
-        await Event.UpdateEvent(event_id, title, description, type, startDate, endDate)
+        await Event.UpdateEvent(id, title, description, type, startDate, endDate, price, address)
 
         return res.status(200).json({ status: "success", success: "Event updated!"})
     }
@@ -80,8 +80,10 @@ class EventController{
         const event = await Event.SelectEvent(event_id)
 
         if(!event[0]) return res.status(400).json({ status: "error", error: "Event not founded!" })
+
+        const user = await Event.SelectUserById(event[0].organiser_id)
            
-        return res.status(200).json({ status: "success", success: "Info of event!", info: event[0]})
+        return res.status(200).json({ status: "success", success: "Info of event!", info: event[0], user: user[0]})
     }
 
     async SearchByStartDate(req, res){

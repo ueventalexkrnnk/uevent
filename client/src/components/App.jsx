@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Axios from 'axios'
 import { useContext } from "react";
 import { Layout } from "./Layout";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -28,10 +29,14 @@ import Favorites from "../pages/Favorites.jsx"
 import ConfirmEmail from "../pages/ConfirmEmail.jsx"
 import FormForgotPassword from "../pages/ForgotPassword.jsx"
 import ResetPassword from "../pages/ResetPassword.jsx"
+import UsersEvent from "../pages/UsersEventP"
+import EditEventP from "../pages/EditEventP"
 
 
 const App = () => {
   const {user} = useContext(Context)
+
+  
 
   function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
@@ -41,8 +46,8 @@ const App = () => {
   }
 
   if(getCookie('token')) user.setIsAuth(true)
-  if(getCookie('status') == 'organiser') user.setIsOrganiser(true)
-  if(getCookie('status') == 'admin') user.setIsAdmin(true)
+  if(getCookie('status') === 'organiser') user.setIsOrganiser(true)
+  if(getCookie('status') === 'admin') user.setIsAdmin(true)
 
   return (
     <Layout>
@@ -58,13 +63,16 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/changedata" element={<ChangeDataPage />} />
         <Route path="/profile/adminpanel" element={<AdminPanel />} />
-        <Route path="/productOwerview" element={<ProductOwerview />} />
-        <Route path="/user" element={<UserPage />} />
+        <Route path="/productOwerview/:id" element={<ProductOwerview />} />
+        <Route path="/user/:user_id" element={<UserPage />} />
+        <Route path="/user/events/:user_id" element={<UsersEvent />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/edit-event/:id" element={<EditEventP />} />
+        
         
 
-        <Route path="/" element={<Register />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<NotFoundpage />} />
+        <Route path="/register" element={< Register/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/confirm-message" element={<WaitingForMail />} />
         <Route path="/confirm-email/:token" element={<ConfirmEmail />} />

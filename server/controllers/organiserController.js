@@ -44,21 +44,8 @@ class OrganiserController{
 
         await Organiser.updateStatus(verifyToken.user_id, profileStatus)
 
-        const NewToken = TokenService.generateLoginTokens({
-            user_id: verifyToken.user_id, 
-            email: verifyToken.email, 
-            login: verifyToken.login,
-            firstName: verifyToken.firstName,
-            lastName: verifyToken.lastName,
-            middleName: verifyToken.middleName,
-            status: profileStatus
-         })
 
-        res.clearCookie('token', { secure: true, httpOnly: true })
-
-        res.cookie('token', NewToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
-
-        await Organiser.updateToken(NewToken)
+       
 
         return res.status(200).json({ status: "success", success: "Organizer status received"})
     }
@@ -91,7 +78,11 @@ class OrganiserController{
 
         res.clearCookie('token', { secure: true, httpOnly: true })
 
+        res.clearCookie('status', { secure: true, httpOnly: true })
+
         res.cookie('token', NewToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+
+        res.cookie('status', profileStatus, {maxAge: 30 * 24 * 60 * 60 * 1000})
 
         return res.status(200).json({ status: "success", success: "Organizer status deleted"})
     }
@@ -105,7 +96,29 @@ class OrganiserController{
 
         const verifyToken = TokenService.validateAccessToken(token)
 
-        await Organiser.updateOrganiserData(verifyToken.user_id, title, description)
+        await Organiser.updateOrganiserData(verifyToken.user_id, title, description
+            )
+        const NewToken = TokenService.generateLoginTokens({
+            user_id: verifyToken.user_id, 
+            email: verifyToken.email, 
+            login: verifyToken.login,
+            firstName: verifyToken.firstName,
+            lastName: verifyToken.lastName,
+            middleName: verifyToken.middleName,
+            status: 'organiser'
+         })
+
+        res.clearCookie('token', { secure: true, httpOnly: true })
+
+        res.clearCookie('status', { secure: true, httpOnly: true })
+
+        res.cookie('token', NewToken, {maxAge: 30 * 24 * 60 * 60 * 1000})
+
+        res.cookie('status', 'organiser', {maxAge: 30 * 24 * 60 * 60 * 1000})
+
+        await Organiser.updateStatus(verifyToken.user_id, 'organiser')
+
+        await Organiser.updateToken(NewToken)
 
         return res.status(200).json({ status: "success", success: "Organiser's date was updated!"})
     }

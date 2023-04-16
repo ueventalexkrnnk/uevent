@@ -9,14 +9,17 @@ const uploadAvatar = require('../middlewares/avatarMiddleware')
 // GET - http://localhost:3000/api/users
 router.get("/", userController.getAllUsers)
 
-// GET - http://localhost:3000/api/users/<user_id>
-router.get("/:user_id", userController.getUserById)
+// GET - http://localhost:3000/api/users/info
+router.get("/info", userController.getUserById)
+
+// GET - http://localhost:3000/api/users/info/:user_id
+router.get("/info/:user_id", userController.getUserByIdParms)
 
 // PATCH - http://localhost:3000/api/users/avatar
-router.patch("/avatar", uploadAvatar.single('image'), userController.userAvatar)
+router.post("/avatar", uploadAvatar.single('image'), userController.userAvatar)
 
-// PATCH - http://localhost:3000/api/users/<user_id>
-router.patch("/:user_id", [
+// PATCH - http://localhost:3000/api/users/update
+router.patch("/update", [
     check('login')
         .notEmpty().withMessage("Fields of login not must not be empty!")
         .isLength({min: 3, max: 23}).withMessage("Login must be longer than 3 and shorter than 20!")
@@ -39,9 +42,9 @@ router.patch("/:user_id", [
         .notEmpty().withMessage("Fields of last name not must not be empty!")
         .isLength({min: 2, max: 30}).withMessage("Last name must be longer than 2 and shorter than 30!")
         .custom(firstName => !/[^a-zA-Z]/.test(firstName)).withMessage("Last name must been to consist of letters!"),
-], uploadAvatar.single('image'), userController.updateUserData)
+], userController.updateUserData)
 
 // DELETE - http://localhost:3000/api/users/<user_id>
-router.delete("/:id", userController.deleteUser)
+router.delete("/:id/delete", userController.deleteUser)
 
 module.exports = router

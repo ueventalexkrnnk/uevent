@@ -10,68 +10,99 @@ import reload from "../store/scripts/Reload"
 import { Context } from '../index'
 import { useContext } from 'react'
 
-const Header = () => {
-  const {user} = useContext(Context)
+import {useLocation} from "react-router-dom"
 
+const Header = () => {
+
+
+  const location = useLocation();
+  let ban = true;
+  if (
+    location.pathname !== "/login" &&
+    location.pathname !== "/register" &&
+    location.pathname !== "/confirm-message" &&
+    location.pathname !== "/forgotPassword" &&
+    location.pathname !== "/send-password-link/:token" &&
+    location.pathname !== "/confirm-email/:token"
+  )
+    ban = true;
+  else ban = false;
+  const {user} = useContext(Context)
   const addEmployee = (e) => {
     Axios.post('http://localhost:5000/api/auth/logout', {
     }, {withCredentials: true}).then((res) => {
         console.log(res)
     })
   }
+
+  function reloadThePage(){
+    window.location.reload();
+  } 
     return (
       <header class="header">
-          <div class="flex">
-            <div>
-              <Link to="/" class="Logo">
-                PAZHILIYE EVENTS
-              </Link>
-            </div>
-             {(user.isAuth == false) &&           
+        <div class="flex">
+          <div>
+          {/* {(ban == false) && 
+            <Link to="/login" class="Logo">
+              PAZHILIYE EVENTS
+            </Link>
+           } */}
+
+          </div>
+          {(ban == true) && 
+          <>
+            <Link to="/main" class="Logo">
+              PAZHILIYE EVENTS
+            </Link>
+            {user.isAuth == false &&  (
               <div class="ms-auto d-flex">
-              <Link class="me-3" to="/register">
-                    <button class="RegisterBut">Register</button>
+                <Link class="me-3" to="/register">
+                  <button class="AddProductBut">Register</button>
                 </Link>
                 <Link class="me-3" to="/login">
-                    <button class="AddProductBut">Login</button>
+                  <button class="AddProductBut">Login</button>
                 </Link>
-            </div>  
-            }
-            {(user.isAuth) && 
-            <div>
-              <Navbar />
-              <div class="ms-auto d-flex">
-                
-                <Link class="me-3" to="/createEvent">
-                  <button class="AddProductBut">Create event</button>
-                </Link>
-                <div class="BurgerMenu">
-                  <div class="profileImage">
-                    <img src={logo} class=" rounded-circle" />
-                  </div>
-                  <div class="DropdownContent">
-                    <Link to="/MyEvents">
-                      <p>My Events</p>
+              </div>
+            )}
+            {user.isAuth && (
+              <>
+                <Navbar />
+                <div class="ms-auto d-flex">
+                  {user.isOrganiser && (
+                    <Link class="me-3" to="/createEvent">
+                      <button class="AddProductBut">Create event</button>
                     </Link>
-                    <Link to="/Profile">
-                      <p>Profile</p>
-                    </Link>
-                    <Link to="/Tickets">
-                      <p>Tickets</p>
-                    </Link>
-                    <div onClick={() => { addEmployee() 
-                      reload.reloadThePage()}}>
-                    <Link to="/login">
-                      <p>Exit</p>
-                    </Link>
+                  )}
+
+                  <div class="BurgerMenu">
+                    <div class="profileImage">
+                      <img src={logo} class=" rounded-circle" />
+                    </div>
+                    <div class="DropdownContent">
+
+                      <Link to="/Profile">
+                        <p>Profile</p>
+                      </Link>
+                      
+                      <div
+                        onClick={() => {
+                          addEmployee()
+                         
+                        }}
+                      >
+                        <Link to="/login">
+                          <p>Exit</p>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            } 
-          </div>
+              </>
+          )}
+          </>
+         } 
           
+        </div>
       </header>
     );
   }

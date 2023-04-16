@@ -1,21 +1,20 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import authStore from "../store/UserStore";
-import {useContext} from "react";
-import { Context } from '../index'
+import { useContext } from "react";
+import { Context } from "../index";
 
 const Navbar = () => {
   const location = useLocation();
 
   // statusUser
 
-  const {user} = useContext(Context)
-  // if(status == 'organiser')
-  //   authStore.isСompany()
+  const { user } = useContext(Context);
+
 
   return (
-    <div class="d-flex mx-auto">
-      {/* {authStore.isСompany() &&  */}
+    <div class="d-flex mx-auto mt-1">
+      {user.isOrganiser && (
         <Link to={"/myevents"} className="YourAds">
           <button
             className={
@@ -25,7 +24,7 @@ const Navbar = () => {
             My events
           </button>
         </Link>
-      {/* } */}
+      )}
       <Link to={"/tickets"} className="YourAds">
         <button
           className={

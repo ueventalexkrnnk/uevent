@@ -76,9 +76,9 @@ class authController{
                 status: user[0].status
              })
             
-            res.cookie('token', token, {maxAge: 30 * 24 * 60 * 60 * 1000})
+            res.cookie('token', token, {maxAge: 30 * 24 * 60 * 60 * 1001, httpOnly: false})
 
-            res.cookie('status', user[0].status, {maxAge: 30 * 24 * 60 * 60 * 1000})
+            res.cookie('status', user[0].status, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: false})
             
             const match = await bcrypt.compare(password, user[0].password)
 
@@ -101,7 +101,9 @@ class authController{
 
             await User.deleteUserToken(verifyToken.email)
 
-            res.clearCookie('token', { secure: true, httpOnly: true });
+            res.clearCookie('token', { secure: true, httpOnly: false });
+
+            res.clearCookie('status', { secure: true, httpOnly: false });
 
             return res.status(200).json({status: "success", success: "User logged out!"})
         } catch (e) {

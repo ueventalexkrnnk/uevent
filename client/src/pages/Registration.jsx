@@ -249,17 +249,7 @@ const Registration = () => {
                             />
                     </div>
 
-                    <div class="form-check ml-5 mt-3">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                        />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            Company
-                        </label>
-                    </div>
+
                     <div onClick={addEmployee}>
                         <Link to={'/confirm-message'}>
                             <button disabled={!formValid} class='RegButton'>

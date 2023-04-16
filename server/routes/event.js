@@ -14,7 +14,7 @@ router.get("/:event_id", eventController.OneEvent)
 
 router.post("/create", eventController.CreateEvent)
 
-router.post("/update/:event_id", eventController.UpdateEvent)
+router.patch("/update", eventController.UpdateEvent)
 
 router.delete("/delete/:event_id", eventController.DeleteEvent)
 

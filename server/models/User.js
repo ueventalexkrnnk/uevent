@@ -88,6 +88,14 @@ class User{
         return data
     }
 
+    async updateAvatar(user_id, profile_pic){
+        const data = await db('user')
+            .insert({profile_pic: profile_pic})
+            .where('user_id', '=', user_id)
+        
+        return data
+    }
+
     async getAllUsers(){
         const data = await db('user')
             .select(
@@ -106,20 +114,18 @@ class User{
 
     async getById(user_id){
         const data = await db('user')
-            .select(
-                'user.user_id',
-                'user.login',
-                'user.firstName',
-                'user.lastName',
-                'user.middleName',
-                'user.email',
-                'user.profile_pic',
-                'user.status'
-            )
-            .where('user_id', '=', user_id)
-
-        return data;
+            .select('*')
+            .where('user_id', '=', user_id);
+        return data
     }
+
+    async getByIdOrg(user_id){
+        const data = await db('organiser')
+            .select('*')
+            .where('user_id', '=', user_id);
+        return data
+    }
+
 
     async findOne(columnName, value) {
         try {
@@ -143,11 +149,9 @@ class User{
     }
 
     async deleteUser(user_id){
-        try {
-            await db('user').where('user_id', '=', user_id).del();
-        } catch (err) {
-            throw err;
-        }
+        const data = await db('user').where('user_id', '=', user_id).del();
+
+        return data
     }
 
     async deleteUserToken(email){
@@ -158,19 +162,17 @@ class User{
         return data
     }
 
-    async updateUserDate(user_id, date) {
+    async updateUserDate(user_id, login, firstName, middleName, lastName, profileStatus) {
         try {
             const data = await db('user')
             .where('user_id', '=', user_id)
             .update({
-                login: date.login,
-                password: date.password,
-                firstName: date.firstName,
-                middleName: date.middleName,
-                lastName: date.lastName,
-                email: date.email,
-                profile_pic: data.profile_pic,
-                status: date.status
+                login: login,
+                firstName: firstName,
+                middleName: middleName,
+                lastName: lastName,
+                // profileStatus: profileStatus,
+                // profile_pic: profile_pic,
             })
             
             return data

@@ -3,12 +3,9 @@ import "../App.css";
 import { Link } from "react-router-dom";
 import Axios from 'axios'
 
-// изменение
-// import { observer } from "mobx-react-lite";
-import authStore from "../store/UserStore";
-// -------
-
 const Login = () => {
+
+
 
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -17,28 +14,12 @@ const Login = () => {
     window.location.reload();
   } 
 
-
-  // const addEmployee = (e) => {
-  //   Axios.post('http://localhost:5000/api/auth/login', {
-  //       email, password, 
-  //   }, {withCredentials: true}).then((res) => {
-  //       console.log(res)
-  //   })}
-
   const addEmployee = (e) => {
-    // изменение
-    // e.preventDefault();
-    // чтобы предотвратить перезагрузку страницы при отправке формы.
-    //------------- 
     Axios.post('http://localhost:5000/api/auth/login', {
         email, password, 
     }, {withCredentials: true}).then((res) => {
         console.log(res)
-        // if (res.status === 200) {
-        //   authStore.login(email,password); // короче передаются данные на проверку
-        // }
-    });  
-  }   
+    })}   
 
       return (
         <main>
@@ -53,8 +34,8 @@ const Login = () => {
                       onChange={e => setPassword(e.target.value)}/>
 
                     <div class="row" onClick={() => {addEmployee()
-                    reloadThePage()}}>
-                      <Link to={'/main'} type="submit" class='LogInButton'>Sign In</Link>
+                    }}>
+                      <Link to={'/main'} type="submit" class='LogInButton' >Sign In</Link>
                         {/* <Link style={{padding_right:"0",padding_left: "0"}}  to="/register">
                           <input  class='LogInButton' value='Registration' />
                         </Link> */}

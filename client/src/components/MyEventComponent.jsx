@@ -4,8 +4,15 @@ import { Link } from "react-router-dom";
 import CarFoto from "../img/LogoNight.png";
 import Edit from "../img/Profile/Edit.png";
 import Delete from "../img/Profile/Delete.png";
-class ProductComonents extends React.Component {
-  render() {
+import Axios from "axios";
+
+const MyEventComponent = ({ dataEvent }) => {
+  const { event_id, title, description } = dataEvent;
+
+  const DeleteEmployee = (e) => {
+    Axios.delete(`http://localhost:5000/api/event/delete/${event_id}`, {withCredentials: true}).then((res) => {
+        console.log(res)
+    })}
     return (
       <div class="Profile">
         <div class="col-md-9">
@@ -14,27 +21,19 @@ class ProductComonents extends React.Component {
               <img class="CarFoto" src={CarFoto} alt="" />
             </div>
             <div class="col-md-8">
-              <p className="Title"> <Link to="/productOwerview">Mustang Mach-e 2021</Link> </p>
+            <Link to={`/productOwerview/${event_id}`}><p className="Title">{title}</p></Link>
               <div className="DescriptionBLock">
                 <p className="Description">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic... printing and typesetting
-                  industry. Lorem Ipsum has been the industry's standard dummy
-                  text ever since the 1500s, when an unknown printer took a
-                  galley of type and scrambled it to make a type specimen book.
-                  It has survived not only five centuries, but also the leap
-                  into electronic...
+                  {description}
                 </p>
               </div>
             </div>
             <div class="col-md-2">
               <row>
-                <img className="OrderSettings" src={Edit}></img>
-                <img className="OrderSettings" src={Delete}></img>
+                <Link to={`/edit-event/${event_id}`}><img className="OrderSettings" src={Edit}></img></Link>
+                
+                <img className="OrderSettings" src={Delete}  onClick={() => {DeleteEmployee()
+                    window.location.reload()}}></img>
               </row>
             </div>
             <div class="col-md-2 offset-md-1"></div>
@@ -43,5 +42,5 @@ class ProductComonents extends React.Component {
       </div>
     );
   }
-}
-export default ProductComonents;
+
+export default MyEventComponent;

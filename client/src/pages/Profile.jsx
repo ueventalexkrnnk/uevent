@@ -1,21 +1,48 @@
 import React, { useState } from "react";
+import Axios from 'axios'
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import logo from "../img/Profile/bandatra.png";
 import ChangeAv from "../components/ChangeAvatar.jsx";
 
-const Settings = () => {
-  // const getNick = () => {
-  //   dasd
-  // }
+import { Context } from "../index";
+import { useContext } from "react";
 
-  return (
+const Settings = () => {
+
+
+  const {user} = useContext(Context)
+
+  const [isLoading, setLoading] = React.useState(false)
+
+  const [data, setData] = useState([])
+
+  
+
+  React.useEffect(() => {
+    
+    const fetchGet = async () => {
+      setLoading(true)
+      try{
+        const response = await Axios.get('http://localhost:5000/api/user/info', {withCredentials: true})
+        setData(response.data.user)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchGet();
+  }, []);
+
+  return isLoading ? <></> : (
     <main>
       <div class="container p-2 pt-5 ">
         <div class="d-flex justify-content-center">
           <div class="w-25">
             <img src={logo} class=" rounded-circle" />
-            <h1 class="">Nick</h1>
+            <h1 class="">{data[0]?.login}</h1>
+            
           </div>
           <div class="ms-5 ">
             <div>
@@ -30,11 +57,13 @@ const Settings = () => {
               </button>
             </div>
             <div class="mt-3 d-flex ">
-              <button class="profileBut">
-                <Link to={"/profile/adminpanel"} class="text-decoration-none">
-                  <h3 class="text-dark">Admin panel</h3>
-                </Link>
-              </button>
+              {user.isAdmin && (
+                <button class="profileBut">
+                  <Link to={"/profile/adminpanel"} class="text-decoration-none">
+                    <h3 class="text-dark">Admin panel</h3>
+                  </Link>
+                </button>
+              )}
             </div>
           </div>
         </div>

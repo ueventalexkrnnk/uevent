@@ -19,7 +19,8 @@ class SendMail {
             </p>
         </div>
         `;
-    } else {
+    } 
+    if (type === 'reset') {
       massageEmail.subject = 'Reset password link - uevent.com';
       massageEmail.html = `
         <div>
@@ -30,6 +31,17 @@ class SendMail {
         </div>
         `;
     }
+    // if (type === 'profile_reset') {
+    //   massageEmail.subject = 'Reset password link - uevent.com';
+    //   massageEmail.html = `
+    //     <div>
+    //         <p>
+    //             You requested for reset password, kindly use this to reset your password
+    //             <a link href="http://localhost:3000/send-password-link/${token}">link</a>
+    //         </p>
+    //     </div>
+    //     `;
+    // }
     const mail = nodemailer.createTransport({
       service: 'gmail',
       auth: {

@@ -20,7 +20,7 @@ const ConfirmEmail = () => {
   }, [])
 
   return (
-    <div class="bform py-5">
+    <div class="bform py-5 mb-4" >
         <div class="row">
             <div class="container">
                 <div class="col-lg-6 align-justify-center pr-4 pl-0 contact-form">

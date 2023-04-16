@@ -8,7 +8,7 @@ class Event{
         return data
     }
 
-    async createEvent(organiser_id, title, description, type, startDate, endDate){
+    async createEvent(organiser_id, title, description, type, startDate, endDate, price, adress){
         const data = await db('event')
             .insert({
                 organiser_id: organiser_id,
@@ -16,23 +16,36 @@ class Event{
                 type: type,
                 description: description,
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                price: price,
+                address: adress
             })
 
         return data
     }
 
-    async UpdateEvent(event_id, title, description, type, startDate, endDate){
+
+    async UpdateEvent(event_id, title, description, type, startDate, endDate, price, address){
         const data = await db('event')
             .update({
                 title: title,
                 type: type,
                 description: description,
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                price: price,
+                address: address
             })
             .where('event_id', '=', event_id)
 
+        return data
+    }
+
+    async SelectUserById(organiser_id){
+        const data = await db('organiser')
+            .select('*')
+            .where('organiser_id', '=', organiser_id)
+            .leftJoin('user', 'user.user_id', 'organiser.user_id')
         return data
     }
 

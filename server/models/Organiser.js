@@ -62,11 +62,11 @@ class Organiser{
 
     async updateOrganiserData(user_id, title, description){
         const data = await db('organiser')
-            .update({
+            .insert({
                 title: title,
-                description: description
+                description: description,
+                user_id: user_id
             })
-            .where('user_id', '=', user_id)
         
         return data
     }
